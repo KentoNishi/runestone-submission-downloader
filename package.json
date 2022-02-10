@@ -14,7 +14,7 @@
     "vite-plugin-copy": "^0.1.6"
   },
   "scripts": {
-    "build": "vite build",
+    "build": "vite build && copyfiles manifest.json dist",
     "dev": "vite build --watch"
   },
   "type": "module"

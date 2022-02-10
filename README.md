@@ -1,3 +1,12 @@
 # Runestone Submission Downloader
 
-https://github.com/KentoNishi/runestone-submission-downloader/blob/master/demo.mp4?raw=true
+Download all Runestone student submissions at once as a zip!
+
+![./demo.gif](./demo.gif)
+
+
+## Commands
+```bash
+yarn dev   # development build
+yarn build # production build
+```
