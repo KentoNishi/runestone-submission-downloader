@@ -4,6 +4,8 @@ Download all Runestone student submissions at once as a zip! Made for Mr. Mark K
 
 ![./demo.gif](./demo.gif)
 
+## Download
+[Download from GitHub Releases](https://github.com/KentoNishi/runestone-submission-downloader/releases)
 
 ## Commands
 ```bash

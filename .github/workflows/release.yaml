@@ -8,14 +8,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-        with:
-          submodules: 'recursive'
-      - uses: c-hive/gha-yarn-cache@v1
       - name: Install packages
         run: yarn
       - name: Build extension
         run: |
           yarn build
+        continue-on-error: true
+      - name: Zip the extension
+        run: |
           echo EXT_VERSION=$(echo -n ${{ github.ref }} | sed 's/[refs\/tagv]//g') >> $GITHUB_ENV
           zip -r dist.zip dist
       - name: Upload Chrome build to release
