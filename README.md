@@ -1,6 +1,6 @@
 # Runestone Submission Downloader
 
-Download all Runestone student submissions at once as a zip!
+Download all Runestone student submissions at once as a zip! Made for Mr. Mark Kwong at Lynbrook (@psmaker).
 
 ![./demo.gif](./demo.gif)
 
