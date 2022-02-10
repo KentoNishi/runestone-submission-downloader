@@ -17,5 +17,6 @@
     "build": "vite build && copyfiles manifest.json dist",
     "dev": "vite build --watch"
   },
-  "type": "module"
+  "type": "module",
+  "license": "MIT"
 }
