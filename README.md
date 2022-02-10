@@ -1,3 +1,3 @@
 # Runestone Submission Downloader
 
-https://raw.githubusercontent.com/KentoNishi/runestone-submission-downloader/master/demo.mp4
+https://github.com/KentoNishi/runestone-submission-downloader/blob/master/demo.mp4?raw=true
