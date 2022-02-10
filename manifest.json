@@ -1,0 +1,11 @@
+{
+  "manifest_version": 3,
+  "name": "Runestone Submission Downloader",
+  "version": "6.9.420",
+  "content_scripts": [
+    {
+      "matches": ["https://runestone.academy/runestone/admin/grading"],
+      "js": ["content-script.js"]
+    }
+  ]
+}
