@@ -12,6 +12,7 @@ jobs:
         run: yarn
       - name: Build extension
         run: |
+          ls -a
           yarn build
         continue-on-error: true
       - name: Zip the extension
