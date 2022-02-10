@@ -1,0 +1,28 @@
+name: Latest Release Build
+on:
+  release:
+    types:
+      - published
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
+      - uses: c-hive/gha-yarn-cache@v1
+      - name: Install packages
+        run: yarn
+      - name: Build extension
+        run: |
+          yarn build
+          echo EXT_VERSION=$(echo -n ${{ github.ref }} | sed 's/[refs\/tagv]//g') >> $GITHUB_ENV
+          zip -r dist.zip dist
+      - name: Upload Chrome build to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: dist.zip
+          asset_name: Runestone-Submission-Downloader-${{ env.EXT_VERSION }}.zip
+          tag: ${{ github.ref }}
+          overwrite: true
