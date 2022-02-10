@@ -16,7 +16,8 @@ jobs:
       - name: Zip extension
         run: |
           echo EXT_VERSION=$(echo -n ${{ github.ref }} | sed 's/[refs\/tagv]//g') >> $GITHUB_ENV
-          zip -r dist.zip dist
+          cd dist
+          zip -r ../dist.zip *
       - name: Upload Chrome build to release
         uses: svenstaro/upload-release-action@v2
         with:
