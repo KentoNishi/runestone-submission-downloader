@@ -1,7 +1,6 @@
-import * as JSZip from 'jszip';
+import JSZip from 'jszip';
 
-const zip = new JSZip();
-console.log(zip);
+console.log(JSZip());
 
 const questionsElement = Array.from(document.querySelectorAll('h3'))
   .filter(e => e.textContent === 'Questions')[0]

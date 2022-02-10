@@ -9,6 +9,7 @@
     "allowJs": true,
     "checkJs": true,
     "outDir": "./dist",
+    "allowSyntheticDefaultImports": true
   },
   "include": [
     "src/**/*.d.ts",

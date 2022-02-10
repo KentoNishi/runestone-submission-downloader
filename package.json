@@ -13,8 +13,8 @@
     "vite-plugin-copy": "^0.1.6"
   },
   "scripts": {
-    "dev": "vite build --watch",
-    "build": "vite build"
+    "build": "vite build",
+    "dev": "vite build --watch"
   },
   "type": "module"
 }
