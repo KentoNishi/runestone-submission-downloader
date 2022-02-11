@@ -12,6 +12,7 @@ jobs:
         run: yarn
       - name: Build extension
         run: |
+          node .github/workflows/release.js
           yarn build
       - name: Zip extension
         run: |

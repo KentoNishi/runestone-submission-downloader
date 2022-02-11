@@ -4,8 +4,12 @@
   "version": "6.9.420",
   "content_scripts": [
     {
-      "matches": ["https://runestone.academy/runestone/admin/grading"],
-      "js": ["content-script.js"]
+      "matches": [
+        "https://runestone.academy/runestone/admin/grading"
+      ],
+      "js": [
+        "content-script.js"
+      ]
     }
   ]
 }
