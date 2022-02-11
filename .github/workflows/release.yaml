@@ -12,7 +12,8 @@ jobs:
         run: yarn
       - name: Build extension
         run: |
-          echo EXT_VERSION=$(echo -n ${{ github.ref }} | sed 's/[refs\/tagv]//g') >> $GITHUB_ENV
+          export EXT_VERSION=$(echo -n ${{ github.ref }} | sed 's/[refs\/tagv]//g')
+          echo EXT_VERSION=$(echo $EXT_VERSION) >> $GITHUB_ENV
           node .github/workflows/release.js
           yarn build
       - name: Zip extension
