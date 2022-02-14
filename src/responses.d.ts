@@ -6,3 +6,8 @@ interface HistoryResponse {
     timestamps: string[],
   }
 }
+
+interface GradeResponse {
+  comments: string;
+  grade: number;
+}
