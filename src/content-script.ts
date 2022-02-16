@@ -1,5 +1,7 @@
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
+import { Diff2HtmlUI } from 'diff2html/lib-esm/ui/js/diff2html-ui.js';
+import { createPatch } from 'diff/lib/index.es6';
 const THEME = '#0f1b84';
 
 const questionsElement = Array.from(document.querySelectorAll('h3'))
@@ -100,7 +102,10 @@ const mark2Of2s = async (statusElement: HTMLDivElement) => {
   const problems = getProblems();
   const students = getStudents();
   const promises = [];
-  const suspicious: { problem: string; student: string; }[] = [];
+  const suspicious: {
+    problem: string;
+    student: { name: string; id: string; };
+  }[] = [];
   problems.forEach(problem => {
     students.forEach(async student => {
       promises.push((async () => {
@@ -114,7 +119,10 @@ const mark2Of2s = async (statusElement: HTMLDivElement) => {
               if (history.length === 2) {
                 suspicious.push({
                   problem,
-                  student: student.name,
+                  student: {
+                    name: student.name,
+                    id: student.id
+                  },
                 });
               }
               statusElement.textContent = `Downloaded ${student.name}'s ${problem} submission`;
@@ -141,8 +149,41 @@ const mark2Of2s = async (statusElement: HTMLDivElement) => {
     problemElement.style.width = 'fit-content';
     problemElement.style.backgroundColor = '#1f1f1f';
     problemElement.style.borderRadius = '5px';
-    problemElement.textContent = `${problem} by ${student}`;
+    problemElement.textContent = `${problem} by ${student.name}`;
+    const diffElement = document.createElement('div');
+    diffElement.style.display = 'none';
+    problemElement.appendChild(diffElement);
     statusElement.appendChild(problemElement);
+    let show = false;
+    let initial = true;
+    let diffLib: Diff2HtmlUI | undefined = undefined;
+    problemElement.addEventListener('click', async e => {
+      diffElement.style.display = show ? 'none' : 'block';
+      show = !show;
+      if (initial) {
+        initial = false;
+        const submission = (await getSubmission(problem, student.id))
+          .detail.history;
+        console.log(submission);
+        const initialSubmission = submission[0] ?? '';
+        const finalSubmission = submission[1] ?? '';
+        initial = false;
+        const parsed = createPatch(
+          'submission.py',
+          initialSubmission,
+          finalSubmission,
+          '',
+          ''
+        );
+        diffLib = new Diff2HtmlUI(
+          diffElement,
+          parsed
+        );
+        diffLib.draw();
+        diffElement.style.display = 'block';
+      }
+    });
+    diffElement.addEventListener('click', e => e.stopPropagation());
   });
 };
 
