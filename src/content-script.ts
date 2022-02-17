@@ -1,7 +1,7 @@
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
-import { Diff2HtmlUI } from 'diff2html/lib-esm/ui/js/diff2html-ui.js';
-import { createPatch } from 'diff/lib/index.es6';
+// import { Diff2HtmlUI } from 'diff2html/lib-esm/ui/js/diff2html-ui.js';
+// import { createPatch } from 'diff/lib/index.es6';
 const THEME = '#0f1b84';
 
 const questionsElement = Array.from(document.querySelectorAll('h3'))
@@ -97,6 +97,8 @@ const createDownloaderButton = () => {
   });
 };
 
+const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
 const mark2Of2s = async (statusElement: HTMLDivElement) => {
   statusElement.textContent = 'Starting...';
   const problems = getProblems();
@@ -110,6 +112,7 @@ const mark2Of2s = async (statusElement: HTMLDivElement) => {
     students.forEach(async student => {
       promises.push((async () => {
         const { grade } = await getGrade(problem, student.id);
+        console.log(`Retrieved grade for ${student.name}'s ${problem} submission`);
         if (grade === 10) {
           let done = false;
           while (!done) {
@@ -150,40 +153,50 @@ const mark2Of2s = async (statusElement: HTMLDivElement) => {
     problemElement.style.backgroundColor = '#1f1f1f';
     problemElement.style.borderRadius = '5px';
     problemElement.textContent = `${problem} by ${student.name}`;
-    const diffElement = document.createElement('div');
-    diffElement.style.display = 'none';
-    problemElement.appendChild(diffElement);
+    // const diffElement = document.createElement('div');
+    // diffElement.style.display = 'none';
+    // problemElement.appendChild(diffElement);
     statusElement.appendChild(problemElement);
-    let show = false;
-    let initial = true;
-    let diffLib: Diff2HtmlUI | undefined = undefined;
+    const studentSelector = document.querySelector('#studentselector') as HTMLSelectElement;
+    const parentElement = studentSelector.parentElement;
     problemElement.addEventListener('click', async e => {
-      diffElement.style.display = show ? 'none' : 'block';
-      show = !show;
-      if (initial) {
-        initial = false;
-        const submission = (await getSubmission(problem, student.id))
-          .detail.history;
-        console.log(submission);
-        const initialSubmission = submission[0] ?? '';
-        const finalSubmission = submission[1] ?? '';
-        initial = false;
-        const parsed = createPatch(
-          'submission.py',
-          initialSubmission,
-          finalSubmission,
-          '',
-          ''
-        );
-        diffLib = new Diff2HtmlUI(
-          diffElement,
-          parsed
-        );
-        diffLib.draw();
-        diffElement.style.display = 'block';
-      }
+      (parentElement.querySelector(`option[value="${student.id}"]`) as HTMLOptionElement).selected = true;
+      await sleep(100);
+      studentSelector.dispatchEvent(new Event('change'));
     });
-    diffElement.addEventListener('click', e => e.stopPropagation());
+    problemElement.style.cursor = 'pointer';
+
+    // let show = false;
+    // let initial = true;
+    // let diffLib: Diff2HtmlUI | undefined = undefined;
+    // problemElement.addEventListener('click', async e => {
+    //   diffElement.style.display = show ? 'none' : 'block';
+    //   show = !show;
+    //   if (initial) {
+    //     initial = false;
+    //     const submission = (await getSubmission(problem, student.id))
+    //       .detail.history;
+    //     console.log(submission);
+    //     const initialSubmission = submission[0] ?? '';
+    //     const finalSubmission = submission[1] ?? '';
+    //     initial = false;
+    //     const parsed = createPatch(
+    //       'submission.py',
+    //       initialSubmission,
+    //       finalSubmission,
+    //       '',
+    //       ''
+    //     );
+    //     diffLib = new Diff2HtmlUI(
+    //       diffElement,
+    //       parsed
+    //     );
+    //     diffLib.draw();
+    //     diffElement.style.display = 'block';
+    //   }
+    // });
+    // diffElement.addEventListener('click', e => e.stopPropagation());
+
   });
 };
 
